@@ -1,0 +1,53 @@
+name: alarm_clock
+description: "A new Flutter project."
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.2.6 <4.0.0'
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  intl: ^0.19.0
+  provider: ^6.1.2
+  dotted_border: ^2.1.0
+  timezone: ^0.9.4
+  sqflite: ^2.3.3+1
+  path: ^1.9.0
+  permission_handler: ^11.3.1
+  awesome_notifications: ^0.9.3+1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+
+flutter:
+
+
+  uses-material-design: true
+
+
+  assets:
+    - assets/
+
+  fonts:
+    - family: avenir
+      fonts:
+        - asset: assets/fonts/Avenir-Book.ttf
+        - asset: assets/fonts/Avenir-Heavy.ttf
+          weight: 700
+        - asset: assets/fonts/Avenir-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Avenir-Light.ttf
+          weight: 300
+
