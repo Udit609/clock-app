@@ -148,9 +148,11 @@ class _AlarmPageState extends State<AlarmPage> {
                       Builder(builder: (context) {
                         return GestureDetector(
                           onTap: () async {
-                            final DateTime? newDateTime =
+                            DateTime? newDateTime =
                                 await AlarmMethods.customTimePicker(
-                                    context, alarm.alarmDateTime!);
+                              context,
+                              alarm.alarmDateTime!,
+                            );
 
                             if (newDateTime != null) {
                               alarm.alarmDateTime = newDateTime;
@@ -162,11 +164,17 @@ class _AlarmPageState extends State<AlarmPage> {
                               if (selectedDaysMap.isEmpty) {
                                 await cancelScheduledNotifications(
                                     alarm.notificationId!);
+                                if (DateTime.now().isAfter(newDateTime)) {
+                                  newDateTime =
+                                      newDateTime.add(Duration(days: 1));
+                                  alarm.alarmDateTime = newDateTime;
+                                  await alarmHelper.updateAlarm(alarm);
+                                }
                                 await scheduleAlarmNotification(
                                   alarm.notificationId!,
                                   newDateTime,
                                   alarm.title!,
-                                  alarm.alarmDateTime!.weekday,
+                                  newDateTime.weekday,
                                 );
                               } else {
                                 rescheduleNotificationsForSelectedDays(alarm);
@@ -205,7 +213,7 @@ class _AlarmPageState extends State<AlarmPage> {
     );
   }
 
-  Switch alarmSwitch(AlarmInfo alarm){
+  Switch alarmSwitch(AlarmInfo alarm) {
     return Switch(
       onChanged: (bool value) async {
         setState(() {
@@ -229,6 +237,10 @@ class _AlarmPageState extends State<AlarmPage> {
               );
             }
           } else {
+            if (DateTime.now().isAfter(alarm.alarmDateTime ?? DateTime.now())) {
+              alarm.alarmDateTime = alarm.alarmDateTime!.add(Duration(days: 1));
+              await alarmHelper.updateAlarm(alarm);
+            }
             await scheduleAlarmNotification(
               alarm.notificationId!,
               alarm.alarmDateTime!,
@@ -265,11 +277,15 @@ class _AlarmPageState extends State<AlarmPage> {
           Builder(builder: (context) {
             return FloatingActionButton(
               onPressed: () async {
-                final DateTime? selectedDateTime = await AlarmMethods.customTimePicker(
+                DateTime? selectedDateTime =
+                    await AlarmMethods.customTimePicker(
                   context,
-                  DateTime.now(),
+                  DateTime.now().add(Duration(hours: 1)),
                 );
                 if (selectedDateTime != null) {
+                  if (DateTime.now().isAfter(selectedDateTime)) {
+                    selectedDateTime = selectedDateTime.add(Duration(days: 1));
+                  }
                   scheduleAlarm(selectedDateTime);
                 }
               },
@@ -286,5 +302,4 @@ class _AlarmPageState extends State<AlarmPage> {
       ),
     );
   }
-
 }

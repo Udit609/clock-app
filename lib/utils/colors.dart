@@ -13,7 +13,6 @@ class CustomColors {
   static Color minHandEndColor = Color(0xFF77DDFF);
   static Color hourHandStatColor = Color(0xFFC279FB);
   static Color hourHandEndColor = Color(0xFFEA74AB);
-  static Color skyAfter = Color(0xFF6448FE);
 }
 
 class GradientColors {

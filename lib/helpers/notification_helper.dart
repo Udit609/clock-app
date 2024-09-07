@@ -44,7 +44,7 @@ Future<void> scheduleAlarmNotification(
     content: NotificationContent(
       id: id,
       channelKey: 'scheduled',
-      title: title,
+      title: title == 'Label' ? 'Alarm': title,
       body: '$day $time',
       backgroundColor: CustomColors.clockBG,
       color: Colors.white,

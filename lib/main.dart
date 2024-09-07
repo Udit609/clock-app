@@ -26,6 +26,7 @@ void main() async {
         defaultColor: CustomColors.clockBG,
         importance: NotificationImportance.High,
         channelDescription: 'Notification channel to schedule alarms',
+        playSound: true,
         defaultRingtoneType: DefaultRingtoneType.Alarm,
         enableVibration: true,
       ),
@@ -68,7 +69,7 @@ class _MyAppState extends State<MyApp> {
       ),
       home: ChangeNotifierProvider<MenuInfo>(
           create: (BuildContext context) => MenuInfo(menuType: MenuType.clock),
-          child: HomePage()),
+          child: const HomePage()),
     );
   }
 }

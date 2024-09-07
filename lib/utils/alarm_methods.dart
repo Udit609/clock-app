@@ -17,6 +17,9 @@ class AlarmMethods{
     }
 
     if (alarm.isPending == true && (selectedDaysMap == null || selectedDaysMap.isEmpty)) {
+      if (DateTime.now().isBefore(alarm.alarmDateTime!) && DateTime.now().weekday == alarm.alarmDateTime!.weekday) {
+        return 'Today';
+      }
       return 'Tomorrow';
     }
 
