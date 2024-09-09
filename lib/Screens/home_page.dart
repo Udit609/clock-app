@@ -6,6 +6,7 @@ import 'package:alarm_clock/utils/enums.dart';
 import 'package:alarm_clock/utils/data_list.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,47 +17,67 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Future<bool> requestPreciseAlarm() async {
+    final PermissionStatus status = await Permission.scheduleExactAlarm.status;
+    if (status.isGranted) {
+      return true;
+    } else if (status.isDenied) {
+      return false;
+    } else if (status.isPermanentlyDenied) {
+      return false;
+    } else {
+      return false;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     AwesomeNotifications().isNotificationAllowed().then(
-          (isAllowed) {
+      (isAllowed) {
         if (!isAllowed) {
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: Text('Allow Notifications'),
-              content: Text('Our app would like to send you notifications'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text(
-                    'Don\'t Allow',
-                    style: TextStyle(color: Colors.grey, fontSize: 18),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () => AwesomeNotifications()
-                      .requestPermissionToSendNotifications()
-                      .then((_) => Navigator.pop(context)),
-                  child: Text(
-                    'Allow',
-                    style: TextStyle(
-                      color: Colors.teal,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
+          AwesomeNotifications().requestPermissionToSendNotifications();
         }
       },
     );
+    requestPreciseAlarm().then((onValue) {
+      if (!onValue) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            backgroundColor: CustomColors.clockBG,
+            content: Text(
+              'Allow Clock App to set precise alarms',style: TextStyle(fontSize: 16.0,color: Colors.white),),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  'Don\'t Allow',
+                  style: TextStyle(color: Colors.white60, fontSize: 15),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  Permission.scheduleExactAlarm.request().then((_) => Navigator.pop(context));
+                },
+                child: Text(
+                  'Allow',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      }
+    });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,9 +97,9 @@ class _HomePageState extends State<HomePage> {
               builder: (BuildContext context, MenuInfo value, Widget? child) {
                 if (value.menuType == MenuType.clock) {
                   return ClockPage();
-                }else if(value.menuType == MenuType.alarm) {
-                 return AlarmPage();
-                }else{
+                } else if (value.menuType == MenuType.alarm) {
+                  return AlarmPage();
+                } else {
                   return Container();
                 }
               },

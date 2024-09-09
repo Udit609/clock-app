@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../utils/clock_view.dart';
@@ -10,12 +11,32 @@ class ClockPage extends StatefulWidget {
 }
 
 class _ClockPageState extends State<ClockPage> {
+  late Timer _timer;
+
+  void _startTimer() {
+    _timer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
+      setState(() {
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _startTimer();
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     DateTime now = DateTime.now();
-    Stream<DateTime> getTimeStream() {
-      return Stream.periodic(Duration(seconds: 1), (_) => DateTime.now());
-    }
+    var formattedTime = DateFormat('HH:mm:ss').format(now);
+    var formattedDate = DateFormat('EEE, d MMM').format(now);
 
     var timezoneString = now.timeZoneOffset.toString().split('.').first;
     var offsetSign = '';
@@ -44,46 +65,30 @@ class _ClockPageState extends State<ClockPage> {
           ),
           Flexible(
             flex: 2,
-            child: StreamBuilder<DateTime>(
-              stream: getTimeStream(),
-              builder: (context, snapshot) {
-                if(snapshot.hasData){
-                  var now = snapshot.data!;
-                  var formattedTime = DateFormat('HH:mm:ss').format(now);
-                  var formattedDate = DateFormat('EEE, d MMM').format(now);
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        formattedTime,
-                        style: TextStyle(
-                          fontFamily: 'avenir',
-                          color: Colors.white,
-                          fontSize: 64.0,
-                        ),
-                      ),
-                      Text(
-                        formattedDate,
-                        style: TextStyle(
-                          fontFamily: 'avenir',
-                          fontWeight: FontWeight.w300,
-                          color: Colors.white,
-                          fontSize: 20.0,
-                        ),
-                      ),
-                    ],
-                  );
-                }else {
-                  return Text(
-                    'Loading...',
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  formattedTime,
+                  style: TextStyle(
+                    fontFamily: 'avenir',
+                    color: Colors.white,
+                    fontSize: 58.0,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: Text(
+                    formattedDate,
                     style: TextStyle(
                       fontFamily: 'avenir',
+                      fontWeight: FontWeight.w300,
                       color: Colors.white,
-                      fontSize: 64.0,
+                      fontSize: 20.0,
                     ),
-                  );
-                }
-              }
+                  ),
+                ),
+              ],
             ),
           ),
           Flexible(

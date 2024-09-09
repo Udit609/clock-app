@@ -91,7 +91,7 @@ class _AlarmPageState extends State<AlarmPage> {
               DateFormat('HH:mm').format(alarm.alarmDateTime ?? DateTime.now());
 
           return Container(
-            margin: const EdgeInsets.only(bottom: 32),
+            margin: index == data.length - 1 ? EdgeInsets.only(bottom: 80) : EdgeInsets.only(bottom: 24),
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
               gradient: LinearGradient(

@@ -7,17 +7,17 @@ import 'package:intl/intl.dart';
 import '../models/alarm_info.dart';
 import 'alarm_helper.dart';
 
-Future<void> createPlantFoodNotification() async {
-  await AwesomeNotifications().createNotification(
-    content: NotificationContent(
-      id: 100,
-      channelKey: 'basic_channel',
-      title: 'Alarm',
-      body: 'Florist at 123 Main St. has 2 in stock.',
-      notificationLayout: NotificationLayout.Default,
-    ),
-  );
-}
+// Future<void> createPlantFoodNotification() async {
+//   await AwesomeNotifications().createNotification(
+//     content: NotificationContent(
+//       id: 100,
+//       channelKey: 'basic_channel',
+//       title: 'Alarm',
+//       body: 'Florist at 123 Main St. has 2 in stock.',
+//       notificationLayout: NotificationLayout.Default,
+//     ),
+//   );
+// }
 
 Future<int> generateUniqueNotificationId() async {
   final random = Random();
@@ -45,7 +45,7 @@ Future<void> scheduleAlarmNotification(
       id: id,
       channelKey: 'scheduled',
       title: title == 'Label' ? 'Alarm': title,
-      body: '$day $time',
+      body: '$day $time Swipe to stop',
       backgroundColor: CustomColors.clockBG,
       color: Colors.white,
       notificationLayout: NotificationLayout.Default,
@@ -57,7 +57,7 @@ Future<void> scheduleAlarmNotification(
       fullScreenIntent: true,
       locked: true,
       actionType: ActionType.Default,
-      timeoutAfter: const Duration(minutes: 2),
+      // timeoutAfter: const Duration(minutes: 2),
     ),
     schedule: NotificationCalendar(
       weekday: weekDay,
