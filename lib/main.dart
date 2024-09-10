@@ -23,10 +23,12 @@ void main() async {
       NotificationChannel(
         channelKey: 'scheduled',
         channelName: 'Alarm',
+        defaultPrivacy: NotificationPrivacy.Public,
         defaultColor: CustomColors.clockBG,
         importance: NotificationImportance.High,
         channelDescription: 'Notification channel to schedule alarms',
         playSound: true,
+        locked: true,
         defaultRingtoneType: DefaultRingtoneType.Alarm,
         enableVibration: true,
       ),

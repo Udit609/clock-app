@@ -2,6 +2,7 @@ import 'package:alarm_clock/Screens/fullscreen_notification.dart';
 import 'package:alarm_clock/main.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../models/alarm_info.dart';
 import '../utils/screen_lock_checker.dart';
 import 'alarm_helper.dart';
@@ -18,6 +19,8 @@ class NotificationController {
   @pragma("vm:entry-point")
   static Future<void> onNotificationDisplayedMethod(
       ReceivedNotification receivedNotification) async {
+    const platform = MethodChannel('com.example.alarm_clock/trigger_broadcast');
+    await platform.invokeMethod('triggerBroadcast');
     bool? isLocked = await ScreenLockChecker.isLockScreen();
     if (isLocked!) {
       MyApp.navigatorKey.currentState?.pushAndRemoveUntil(
