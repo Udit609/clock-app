@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:alarm_clock/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../utils/clock_view.dart';
@@ -42,102 +43,101 @@ class _ClockPageState extends State<ClockPage> {
     var offsetSign = '';
     if (!timezoneString.startsWith('-')) offsetSign = '+';
 
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 32.0, vertical: 64.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Flexible(
-            flex: 1,
-            fit: FlexFit.tight,
-            child: Text(
-              'Clock',
-              style: TextStyle(
-                fontFamily: 'avenir',
-                fontWeight: FontWeight.w700,
-                color: Colors.white,
-                fontSize: 24.0,
-              ),
-            ),
+    return Scaffold(
+      backgroundColor: CustomColors.pageBackgroundColor,
+      appBar: AppBar(
+        elevation: 0.0,
+        backgroundColor: Colors.transparent,
+        title: Text(
+          'Clock',
+          style: TextStyle(
+            fontWeight: FontWeight.w700,
+            color: Colors.white,
+            fontSize: 24.0,
           ),
-          SizedBox(
-            height: 32.0,
-          ),
-          Flexible(
-            flex: 2,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  formattedTime,
-                  style: TextStyle(
-                    fontFamily: 'avenir',
-                    color: Colors.white,
-                    fontSize: 58.0,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10.0),
-                  child: Text(
-                    formattedDate,
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Flexible(
+              flex: 1,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    formattedTime,
                     style: TextStyle(
                       fontFamily: 'avenir',
-                      fontWeight: FontWeight.w300,
                       color: Colors.white,
-                      fontSize: 20.0,
+                      fontSize: 58.0,
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
-          Flexible(
-            flex: 4,
-            fit: FlexFit.tight,
-            child: ClockView(
-              size: MediaQuery.of(context).size.height / 4,
-            ),
-          ),
-          Flexible(
-            flex: 2,
-            fit: FlexFit.tight,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Timezone',
-                  style: TextStyle(
-                    fontFamily: 'avenir',
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white,
-                    fontSize: 24.0,
-                  ),
-                ),
-                SizedBox(
-                  height: 16.0,
-                ),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.language,
-                      color: Colors.white,
-                    ),
-                    SizedBox(
-                      width: 16.0,
-                    ),
-                    Text(
-                      'UTC ' + offsetSign + timezoneString,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10.0),
+                    child: Text(
+                      formattedDate,
                       style: TextStyle(
-                          fontFamily: 'avenir',
-                          color: Colors.white,
-                          fontSize: 14.0),
+                        fontFamily: 'avenir',
+                        fontWeight: FontWeight.w300,
+                        color: Colors.white,
+                        fontSize: 20.0,
+                      ),
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+            Flexible(
+              flex: 2,
+              fit: FlexFit.tight,
+              child: ClockView(
+                size: MediaQuery.of(context).size.height / 4,
+              ),
+            ),
+            Flexible(
+              flex: 2,
+              fit: FlexFit.tight,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Timezone',
+                    style: TextStyle(
+                      fontFamily: 'avenir',
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                      fontSize: 24.0,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 16.0,
+                  ),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.language,
+                        color: Colors.white,
+                      ),
+                      SizedBox(
+                        width: 16.0,
+                      ),
+                      Text(
+                        'UTC ' + offsetSign + timezoneString,
+                        style: TextStyle(
+                            fontFamily: 'avenir',
+                            color: Colors.white,
+                            fontSize: 14.0),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -5,7 +5,7 @@ import 'package:alarm_clock/utils/alarm_methods.dart';
 import 'package:alarm_clock/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../models/alarm_info.dart';
+import '../../models/alarm_info.dart';
 
 class AlarmPage extends StatefulWidget {
   const AlarmPage({super.key});
@@ -45,6 +45,18 @@ class _AlarmPageState extends State<AlarmPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF2D2F41),
+      appBar: AppBar(
+        elevation: 0.0,
+        backgroundColor: Colors.transparent,
+        title: Text(
+          'Alarm',
+          style: TextStyle(
+            fontWeight: FontWeight.w700,
+            color: Colors.white,
+            fontSize: 24.0,
+          ),
+        ),
+      ),
       floatingActionButton: addAlarmFAB(context),
       body: alarmStream(context),
     );
@@ -91,7 +103,9 @@ class _AlarmPageState extends State<AlarmPage> {
               DateFormat('HH:mm').format(alarm.alarmDateTime ?? DateTime.now());
 
           return Container(
-            margin: index == data.length - 1 ? EdgeInsets.only(bottom: 80) : EdgeInsets.only(bottom: 24),
+            margin: index == data.length - 1
+                ? EdgeInsets.only(bottom: 80)
+                : EdgeInsets.only(bottom: 24),
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -289,7 +303,7 @@ class _AlarmPageState extends State<AlarmPage> {
                   scheduleAlarm(selectedDateTime);
                 }
               },
-              backgroundColor: CustomColors.minHandStatColor,
+              backgroundColor: CustomColors.fabColor,
               shape: CircleBorder(),
               child: Icon(
                 Icons.add_alarm,

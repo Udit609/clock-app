@@ -1,5 +1,6 @@
-import 'package:alarm_clock/Screens/alarm_page.dart';
+import 'package:alarm_clock/Screens/alarm_screen/alarm_page.dart';
 import 'package:alarm_clock/Screens/clock_page.dart';
+import 'package:alarm_clock/Screens/timer_screen/timer_page.dart';
 import 'package:alarm_clock/models/menu_info.dart';
 import 'package:alarm_clock/utils/colors.dart';
 import 'package:alarm_clock/utils/enums.dart';
@@ -89,8 +90,8 @@ class _HomePageState extends State<HomePage> {
             children: menuItems.map((e) => menuButton(context, e)).toList(),
           ),
           VerticalDivider(
-            color: Colors.white54,
-            width: 1,
+            color: Colors.white10,
+            width: 10.0,
           ),
           Expanded(
             child: Consumer(
@@ -99,6 +100,8 @@ class _HomePageState extends State<HomePage> {
                   return ClockPage();
                 } else if (value.menuType == MenuType.alarm) {
                   return AlarmPage();
+                }else if (value.menuType == MenuType.timer) {
+                  return TimerPage();
                 } else {
                   return Container();
                 }

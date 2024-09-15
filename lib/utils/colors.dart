@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class CustomColors {
   static Color primaryTextColor = Colors.white;
+  static Color fabColor = Color(0xFF5C68C5);
   static Color dividerColor = Colors.white54;
   static Color pageBackgroundColor = Color(0xFF2D2F41);
   static Color menuBackgroundColor = Color(0xFF242634);

@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
-class FullscreenNotification extends StatefulWidget {
+class FullscreenAlarmNotification extends StatefulWidget {
   final String title;
   final DateTime dateTime;
   final int notificationId;
-  const FullscreenNotification({
+  const FullscreenAlarmNotification({
     super.key,
     required this.title,
     required this.dateTime,
@@ -17,10 +17,10 @@ class FullscreenNotification extends StatefulWidget {
   });
 
   @override
-  State<FullscreenNotification> createState() => _FullscreenNotificationState();
+  State<FullscreenAlarmNotification> createState() => _FullscreenAlarmNotificationState();
 }
 
-class _FullscreenNotificationState extends State<FullscreenNotification> {
+class _FullscreenAlarmNotificationState extends State<FullscreenAlarmNotification> {
   @override
   Widget build(BuildContext context) {
     String formattedTime = DateFormat('HH:mm').format(widget.dateTime);

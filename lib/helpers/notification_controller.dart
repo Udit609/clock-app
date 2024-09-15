@@ -1,4 +1,4 @@
-import 'package:alarm_clock/Screens/fullscreen_notification.dart';
+import 'package:alarm_clock/Screens/alarm_screen/fullscreen_alarm_notification.dart';
 import 'package:alarm_clock/main.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +25,7 @@ class NotificationController {
     if (isLocked!) {
       MyApp.navigatorKey.currentState?.pushAndRemoveUntil(
         MaterialPageRoute(
-          builder: (_) => FullscreenNotification(
+          builder: (_) => FullscreenAlarmNotification(
             title: receivedNotification.title ?? 'Alarm',
             dateTime: DateTime.now(),
             notificationId: receivedNotification.id ?? 0,
