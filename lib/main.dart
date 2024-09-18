@@ -1,11 +1,9 @@
 import 'package:alarm_clock/models/menu_info.dart';
 import 'package:alarm_clock/utils/colors.dart';
-import 'package:alarm_clock/utils/enums.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'Screens/home_page.dart';
 import 'package:provider/provider.dart';
-
 import 'helpers/notification_controller.dart';
 
 void main() async {

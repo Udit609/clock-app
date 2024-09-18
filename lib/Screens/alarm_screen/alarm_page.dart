@@ -39,6 +39,9 @@ class _AlarmPageState extends State<AlarmPage> {
     await alarmHelper.insertAlarm(alarmInfo);
     await scheduleAlarmNotification(
         notificationId, dateTime, 'Alarm', dateTime.weekday);
+
+    String timeDifference = AlarmMethods.getTimeDifference(dateTime);
+     AlarmMethods.showAlarmSnackBar(context, timeDifference);
   }
 
   @override
@@ -48,7 +51,7 @@ class _AlarmPageState extends State<AlarmPage> {
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Colors.transparent,
-        title: Text(
+        title: const Text(
           'Alarm',
           style: TextStyle(
             fontWeight: FontWeight.w700,
@@ -67,7 +70,7 @@ class _AlarmPageState extends State<AlarmPage> {
       stream: alarmHelper.watchAlarms(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
+          return const Center(
               child: CircularProgressIndicator(
             color: Colors.white,
             strokeWidth: 4.0,
@@ -75,7 +78,7 @@ class _AlarmPageState extends State<AlarmPage> {
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Center(
+          return const Center(
               child: Text(
             'No alarm set!',
             style: TextStyle(
@@ -99,13 +102,11 @@ class _AlarmPageState extends State<AlarmPage> {
           var alarm = data[index];
           var gradientColors = GradientTemplate
               .gradientTemplate[alarm.gradientColorIndex ?? 0].colors;
-          final String formattedTime =
-              DateFormat('HH:mm').format(alarm.alarmDateTime ?? DateTime.now());
 
           return Container(
             margin: index == data.length - 1
-                ? EdgeInsets.only(bottom: 80)
-                : EdgeInsets.only(bottom: 24),
+                ? const EdgeInsets.only(bottom: 80)
+                : const EdgeInsets.only(bottom: 24),
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -113,7 +114,7 @@ class _AlarmPageState extends State<AlarmPage> {
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
               ),
-              borderRadius: BorderRadius.all(Radius.circular(24)),
+              borderRadius: const BorderRadius.all(Radius.circular(24)),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,20 +126,20 @@ class _AlarmPageState extends State<AlarmPage> {
                   },
                   child: Row(
                     children: <Widget>[
-                      Icon(
+                      const Icon(
                         Icons.label,
                         color: Colors.white,
                         size: 24,
                       ),
-                      SizedBox(width: 8),
+                      const SizedBox(width: 8),
                       Text(
                         alarm.title ?? 'Label',
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
                           fontFamily: 'avenir',
                         ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       alarmSwitch(alarm),
                     ],
                   ),
@@ -149,76 +150,13 @@ class _AlarmPageState extends State<AlarmPage> {
                   },
                   child: Text(
                     AlarmMethods.getAlarmStatus(alarm),
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontFamily: 'avenir',
                     ),
                   ),
                 ),
-                Row(
-                  children: <Widget>[
-                    AlarmMethods.timePickerTheme(
-                      context,
-                      Builder(builder: (context) {
-                        return GestureDetector(
-                          onTap: () async {
-                            DateTime? newDateTime =
-                                await AlarmMethods.customTimePicker(
-                              context,
-                              alarm.alarmDateTime!,
-                            );
-
-                            if (newDateTime != null) {
-                              alarm.alarmDateTime = newDateTime;
-                              alarm.isPending = true;
-                              await alarmHelper.updateAlarm(alarm);
-
-                              Map<int, int> selectedDaysMap =
-                                  alarm.getSelectedDaysMap();
-                              if (selectedDaysMap.isEmpty) {
-                                await cancelScheduledNotifications(
-                                    alarm.notificationId!);
-                                if (DateTime.now().isAfter(newDateTime)) {
-                                  newDateTime =
-                                      newDateTime.add(Duration(days: 1));
-                                  alarm.alarmDateTime = newDateTime;
-                                  await alarmHelper.updateAlarm(alarm);
-                                }
-                                await scheduleAlarmNotification(
-                                  alarm.notificationId!,
-                                  newDateTime,
-                                  alarm.title!,
-                                  newDateTime.weekday,
-                                );
-                              } else {
-                                rescheduleNotificationsForSelectedDays(alarm);
-                              }
-                              setState(() {});
-                            }
-                          },
-                          child: Text(
-                            formattedTime,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: 'avenir',
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        );
-                      }),
-                    ),
-                    Spacer(),
-                    IconButton(
-                      icon: Icon(Icons.delete),
-                      iconSize: 28.0,
-                      color: Colors.white,
-                      onPressed: () async {
-                        await alarmHelper.deleteAlarm(alarm.id ?? 0);
-                      },
-                    ),
-                  ],
-                ),
+                timeAndDeleteButton(context, alarm),
               ],
             ),
           );
@@ -250,9 +188,14 @@ class _AlarmPageState extends State<AlarmPage> {
                 repeat: true,
               );
             }
+            DateTime nextAlarmDate = AlarmMethods.getNextAlarmDate(
+                scheduledDaysMap, alarm.alarmDateTime!);
+            String timeDifference =
+                AlarmMethods.getTimeDifference(nextAlarmDate);
+            AlarmMethods.showAlarmSnackBar(context, timeDifference);
           } else {
             if (DateTime.now().isAfter(alarm.alarmDateTime ?? DateTime.now())) {
-              alarm.alarmDateTime = alarm.alarmDateTime!.add(Duration(days: 1));
+              alarm.alarmDateTime = alarm.alarmDateTime!.add(const Duration(days: 1));
               await alarmHelper.updateAlarm(alarm);
             }
             await scheduleAlarmNotification(
@@ -261,6 +204,10 @@ class _AlarmPageState extends State<AlarmPage> {
               alarm.title!,
               alarm.alarmDateTime!.weekday,
             );
+
+            String timeDifference =
+                AlarmMethods.getTimeDifference(alarm.alarmDateTime!);
+            AlarmMethods.showAlarmSnackBar(context, timeDifference);
           }
         } else {
           if (alarm.scheduledDays != null && alarm.scheduledDays!.isNotEmpty) {
@@ -281,6 +228,91 @@ class _AlarmPageState extends State<AlarmPage> {
     );
   }
 
+  Row timeAndDeleteButton(BuildContext context,AlarmInfo alarm){
+    final String formattedTime =
+    DateFormat('HH:mm').format(alarm.alarmDateTime ?? DateTime.now());
+    return Row(
+      children: <Widget>[
+        AlarmMethods.timePickerTheme(
+          context,
+          Builder(builder: (context) {
+            return GestureDetector(
+              onTap: () async {
+                DateTime? newDateTime =
+                await AlarmMethods.customTimePicker(
+                  context,
+                  alarm.alarmDateTime!,
+                );
+
+                if (newDateTime != null) {
+                  alarm.alarmDateTime = newDateTime;
+                  alarm.isPending = true;
+                  await alarmHelper.updateAlarm(alarm);
+
+                  Map<int, int> selectedDaysMap =
+                  alarm.getSelectedDaysMap();
+                  if (selectedDaysMap.isEmpty) {
+                    await cancelScheduledNotifications(
+                        alarm.notificationId!);
+                    if (DateTime.now().isAfter(newDateTime)) {
+                      newDateTime =
+                          newDateTime.add(const Duration(days: 1));
+                      alarm.alarmDateTime = newDateTime;
+                      await alarmHelper.updateAlarm(alarm);
+                    }
+                    await scheduleAlarmNotification(
+                      alarm.notificationId!,
+                      newDateTime,
+                      alarm.title!,
+                      newDateTime.weekday,
+                    );
+                    String timeDifference =
+                    AlarmMethods.getTimeDifference(
+                        alarm.alarmDateTime!);
+                    AlarmMethods.showAlarmSnackBar(
+                        context, timeDifference);
+                  } else {
+                    rescheduleNotificationsForSelectedDays(alarm);
+
+                    DateTime nextAlarmDate =
+                    AlarmMethods.getNextAlarmDate(
+                        selectedDaysMap, alarm.alarmDateTime!);
+                    String timeDifference =
+                    AlarmMethods.getTimeDifference(
+                        nextAlarmDate);
+                    AlarmMethods.showAlarmSnackBar(
+                      context,
+                      timeDifference,
+                    );
+                  }
+                  setState(() {});
+                }
+              },
+              child: Text(
+                formattedTime,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'avenir',
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            );
+          }),
+        ),
+        const Spacer(),
+        IconButton(
+          icon: const Icon(Icons.delete),
+          iconSize: 28.0,
+          color: Colors.white,
+          onPressed: () async {
+            await alarmHelper.deleteAlarm(alarm.id ?? 0);
+          },
+        ),
+      ],
+    );
+  }
+
   SizedBox addAlarmFAB(BuildContext context) {
     return SizedBox(
       width: 76.0,
@@ -294,18 +326,18 @@ class _AlarmPageState extends State<AlarmPage> {
                 DateTime? selectedDateTime =
                     await AlarmMethods.customTimePicker(
                   context,
-                  DateTime.now().add(Duration(hours: 1)),
+                  DateTime.now().add(const Duration(hours: 1)),
                 );
                 if (selectedDateTime != null) {
                   if (DateTime.now().isAfter(selectedDateTime)) {
-                    selectedDateTime = selectedDateTime.add(Duration(days: 1));
+                    selectedDateTime = selectedDateTime.add(const Duration(days: 1));
                   }
                   scheduleAlarm(selectedDateTime);
                 }
               },
               backgroundColor: CustomColors.fabColor,
-              shape: CircleBorder(),
-              child: Icon(
+              shape: const CircleBorder(),
+              child: const Icon(
                 Icons.add_alarm,
                 color: Colors.white,
                 size: 32.0,

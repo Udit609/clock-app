@@ -15,7 +15,7 @@ class _ClockPageState extends State<ClockPage> {
   late Timer _timer;
 
   void _startTimer() {
-    _timer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
       setState(() {
       });
     });
@@ -48,7 +48,7 @@ class _ClockPageState extends State<ClockPage> {
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Colors.transparent,
-        title: Text(
+        title: const Text(
           'Clock',
           style: TextStyle(
             fontWeight: FontWeight.w700,
@@ -69,7 +69,7 @@ class _ClockPageState extends State<ClockPage> {
                 children: [
                   Text(
                     formattedTime,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontFamily: 'avenir',
                       color: Colors.white,
                       fontSize: 58.0,
@@ -79,7 +79,7 @@ class _ClockPageState extends State<ClockPage> {
                     padding: const EdgeInsets.only(left: 10.0),
                     child: Text(
                       formattedDate,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontFamily: 'avenir',
                         fontWeight: FontWeight.w300,
                         color: Colors.white,
@@ -103,7 +103,7 @@ class _ClockPageState extends State<ClockPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     'Timezone',
                     style: TextStyle(
                       fontFamily: 'avenir',
@@ -112,21 +112,21 @@ class _ClockPageState extends State<ClockPage> {
                       fontSize: 24.0,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 16.0,
                   ),
                   Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.language,
                         color: Colors.white,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 16.0,
                       ),
                       Text(
-                        'UTC ' + offsetSign + timezoneString,
-                        style: TextStyle(
+                        'UTC $offsetSign$timezoneString',
+                        style: const TextStyle(
                             fontFamily: 'avenir',
                             color: Colors.white,
                             fontSize: 14.0),

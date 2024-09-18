@@ -30,7 +30,7 @@ class AlarmInfo {
   Map<String, dynamic> toMap() => {
     "id": id,
     "title": title,
-    "alarmDateTime": alarmDateTime!.toIso8601String(),
+    "alarmDateTime": alarmDateTime?.toIso8601String(),
     "isPending": isPending == true ? 1 : 0,
     "gradientColorIndex": gradientColorIndex,
     "notificationId": notificationId,

@@ -4,8 +4,7 @@ import '../helpers/notification_helper.dart';
 import '../models/alarm_info.dart';
 import 'colors.dart';
 
-class AlarmMethods{
-
+class AlarmMethods {
   static String getAlarmStatus(AlarmInfo alarm) {
     if (alarm.isPending == false) {
       return 'Not Scheduled';
@@ -16,8 +15,10 @@ class AlarmMethods{
       selectedDaysMap = alarm.stringToMap(alarm.scheduledDays!);
     }
 
-    if (alarm.isPending == true && (selectedDaysMap == null || selectedDaysMap.isEmpty)) {
-      if (DateTime.now().isBefore(alarm.alarmDateTime!) && DateTime.now().weekday == alarm.alarmDateTime!.weekday) {
+    if (alarm.isPending == true &&
+        (selectedDaysMap == null || selectedDaysMap.isEmpty)) {
+      if (DateTime.now().isBefore(alarm.alarmDateTime!) &&
+          DateTime.now().weekday == alarm.alarmDateTime!.weekday) {
         return 'Today';
       }
       return 'Tomorrow';
@@ -28,14 +29,33 @@ class AlarmMethods{
       return getDayName(dayIndex, true);
     }
 
-    List<String> dayNames = selectedDaysMap.keys.map((dayIndex) => getDayName(dayIndex, false)).toList();
+    var sortedKeys = selectedDaysMap.keys.toList()..sort();
+
+    List<String> dayNames =
+        sortedKeys.map((dayIndex) => getDayName(dayIndex, false)).toList();
     return dayNames.join(", ");
   }
 
   static String getDayName(int dayIndex, bool fullName) {
-    List<String> fullDayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    List<String> fullDayNames = [
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+      'Sunday'
+    ];
 
-    List<String> shortDayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    List<String> shortDayNames = [
+      'Mon',
+      'Tue',
+      'Wed',
+      'Thu',
+      'Fri',
+      'Sat',
+      'Sun'
+    ];
 
     return fullName ? fullDayNames[dayIndex - 1] : shortDayNames[dayIndex - 1];
   }
@@ -78,16 +98,16 @@ class AlarmMethods{
           dialBackgroundColor: CustomColors.clockBG,
           dialHandColor: CustomColors.minHandStatColor,
           dialTextColor: Colors.white,
-          dialTextStyle: TextStyle(
+          dialTextStyle: const TextStyle(
             fontSize: 16.0,
           ),
           cancelButtonStyle: TextButton.styleFrom(
             foregroundColor: Colors.white,
-            textStyle: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w500),
+            textStyle: const TextStyle(fontSize: 15.0, fontWeight: FontWeight.w500),
           ),
           confirmButtonStyle: TextButton.styleFrom(
             foregroundColor: Colors.white,
-            textStyle: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w500),
+            textStyle: const TextStyle(fontSize: 15.0, fontWeight: FontWeight.w500),
           ),
         ),
       ),
@@ -95,9 +115,10 @@ class AlarmMethods{
     );
   }
 
-  static Future<void> updateTitleDialog(BuildContext context, AlarmInfo alarm) async {
+  static Future<void> updateTitleDialog(
+      BuildContext context, AlarmInfo alarm) async {
     final TextEditingController titleController =
-    TextEditingController(text: alarm.title);
+        TextEditingController(text: alarm.title);
 
     return showDialog<void>(
       context: context,
@@ -106,27 +127,27 @@ class AlarmMethods{
           backgroundColor: CustomColors.pageBackgroundColor,
           content: Theme(
             data: ThemeData(
-                textSelectionTheme: TextSelectionThemeData(
-                  cursorColor: Colors.white,
-                  selectionHandleColor: Colors.white,
-                  selectionColor: Colors.white38,
-                )),
+                textSelectionTheme: const TextSelectionThemeData(
+              cursorColor: Colors.white,
+              selectionHandleColor: Colors.white,
+              selectionColor: Colors.white38,
+            )),
             child: TextField(
               textCapitalization: TextCapitalization.sentences,
               controller: titleController,
               decoration: InputDecoration(
                 labelText: 'Label',
-                labelStyle: TextStyle(color: Colors.white),
+                labelStyle: const TextStyle(color: Colors.white),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(color: Colors.white),
+                  borderSide: const BorderSide(color: Colors.white),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(color: Colors.white),
+                  borderSide: const BorderSide(color: Colors.white),
                 ),
               ),
-              style: TextStyle(fontSize: 16.0, color: Colors.white),
+              style: const TextStyle(fontSize: 16.0, color: Colors.white),
               autofocus: true,
             ),
           ),
@@ -136,7 +157,7 @@ class AlarmMethods{
                 Navigator.of(context).pop();
               },
               style: TextButton.styleFrom(foregroundColor: Colors.white),
-              child: Text(
+              child: const Text(
                 'Cancel',
                 style: TextStyle(fontSize: 15.0),
               ),
@@ -163,11 +184,11 @@ class AlarmMethods{
                     }
                   }
 
-                  Navigator.of(context).pop();
+                  if (context.mounted) Navigator.of(context).pop();
                 }
               },
               style: TextButton.styleFrom(foregroundColor: Colors.white),
-              child: Text(
+              child: const Text(
                 'Done',
                 style: TextStyle(fontSize: 15.0),
               ),
@@ -210,7 +231,7 @@ class AlarmMethods{
 
                       if (!isSelected) {
                         int notificationId =
-                        await generateUniqueNotificationId();
+                            await generateUniqueNotificationId();
                         setState(() {
                           selectedDaysMap[index] = notificationId;
                         });
@@ -228,13 +249,13 @@ class AlarmMethods{
                       ),
                       child: Center(
                           child: Text(
-                            day,
-                            style: TextStyle(
-                              fontSize: 14.0,
-                              color:
+                        day,
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          color:
                               isSelected ? CustomColors.clockBG : Colors.white,
-                            ),
-                          )),
+                        ),
+                      )),
                     ),
                   ),
                 );
@@ -264,11 +285,11 @@ class AlarmMethods{
                     }
                     alarm.scheduledDays = alarm.mapToString(selectedDaysMap);
                   } else {
-                    if(savedDaysMap.isNotEmpty){
+                    if (savedDaysMap.isNotEmpty) {
                       for (var notificationId in savedDaysMap.values) {
                         await cancelScheduledNotifications(notificationId);
                       }
-                    }else{
+                    } else {
                       if (alarm.isPending!) {
                         cancelScheduledNotifications(alarm.notificationId ?? 0);
                       }
@@ -287,20 +308,26 @@ class AlarmMethods{
                       );
 
                       await scheduleAlarmNotification(
-                          notificationId, scheduledTime, alarm.title!, dayIndex,
-                          repeat: true);
+                        notificationId,
+                        scheduledTime,
+                        alarm.title!,
+                        dayIndex,
+                        repeat: true,
+                      );
                     }
 
-
                     alarm.scheduledDays = alarm.mapToString(selectedDaysMap);
-                    print(selectedDaysMap);
-                    print('database: ${alarm.scheduledDays}');
                     alarm.isPending = true;
+
+                    DateTime nextAlarmDate =
+                        getNextAlarmDate(selectedDaysMap, alarm.alarmDateTime!);
+                    String timeDifference = getTimeDifference(nextAlarmDate);
+                    showAlarmSnackBar(context, timeDifference);
                   }
 
                   await AlarmHelper().updateAlarm(alarm);
 
-                  Navigator.of(context).pop();
+                  if (context.mounted) Navigator.of(context).pop();
                 },
                 child: const Text(
                   'Done',
@@ -311,6 +338,68 @@ class AlarmMethods{
           );
         });
       },
+    );
+  }
+
+  static DateTime getNextAlarmDate(
+      Map<int, int> selectedDaysMap, DateTime newDateTime) {
+    DateTime now = DateTime.now();
+    DateTime nextAlarmDate = DateTime(
+      now.year,
+      now.month,
+      now.day,
+      newDateTime.hour,
+      newDateTime.minute,
+    );
+
+    List<int> daysOfWeek = selectedDaysMap.keys.toList();
+    daysOfWeek.sort();
+    int currentDayIndex = now.weekday;
+
+    int nextDayIndex = daysOfWeek.firstWhere(
+      (dayIndex) => dayIndex > currentDayIndex,
+      orElse: () => daysOfWeek.first,
+    );
+
+    if (nextDayIndex < currentDayIndex ||
+        (nextDayIndex == currentDayIndex && now.isAfter(nextAlarmDate))) {
+      nextAlarmDate = nextAlarmDate
+          .add(Duration(days: 7 - (currentDayIndex - nextDayIndex)));
+    } else if (nextDayIndex > currentDayIndex) {
+      nextAlarmDate =
+          nextAlarmDate.add(Duration(days: nextDayIndex - currentDayIndex));
+    }
+    return nextAlarmDate;
+  }
+
+  static String getTimeDifference(DateTime scheduledDateTime) {
+    Duration difference = scheduledDateTime.difference(DateTime.now());
+
+    if (difference.inMinutes <= 0) {
+      return "Alarm set for less than a minute from now";
+    } else if (difference.inDays > 0) {
+      if (difference.inHours % 24 == 0) {
+        return "Alarm set for ${difference.inDays} day${difference.inDays > 1 ? 's' : ''} and ${difference.inMinutes % 60} minute${difference.inMinutes % 60 > 1 ? 's' : ''} from now";
+      } else {
+        return "Alarm set for ${difference.inDays} day${difference.inDays > 1 ? 's' : ''} and ${difference.inHours % 24} hour${difference.inHours % 24 > 1 ? 's' : ''} and ${difference.inMinutes % 60} minute${difference.inMinutes % 60 > 1 ? 's' : ''} from now";
+      }
+    } else if (difference.inHours > 0) {
+      return "Alarm set for ${difference.inHours} hour${difference.inHours > 1 ? 's' : ''} and ${difference.inMinutes % 60} minute${difference.inMinutes % 60 > 1 ? 's' : ''} from now";
+    } else {
+      return "Alarm set for ${difference.inMinutes} minute${difference.inMinutes > 1 ? 's' : ''} from now";
+    }
+  }
+
+  static void showAlarmSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: const TextStyle(fontSize: 16.0),
+        ),
+        duration: const Duration(seconds: 3),
+        behavior: SnackBarBehavior.floating,
+      ),
     );
   }
 }

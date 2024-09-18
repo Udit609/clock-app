@@ -7,8 +7,7 @@ class ScreenLockChecker {
     try {
       final bool? isLocked = await platform.invokeMethod('isScreenLocked');
       return isLocked;
-    } on PlatformException catch (e) {
-      print("Failed to check screen lock: '${e.message}'.");
+    } on PlatformException{
       return null;
     }
   }

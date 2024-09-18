@@ -1,5 +1,6 @@
-import 'package:alarm_clock/utils/enums.dart';
 import 'package:flutter/foundation.dart';
+
+enum MenuType { clock, alarm}
 
 class MenuInfo extends ChangeNotifier{
   MenuType menuType;
@@ -17,3 +18,14 @@ class MenuInfo extends ChangeNotifier{
   }
 
 }
+
+List<MenuInfo> menuItems = [
+  MenuInfo(
+      menuType: MenuType.clock,
+      title: 'Clock',
+      imageSource: 'assets/clock_icon.png'),
+  MenuInfo(
+      menuType: MenuType.alarm,
+      title: 'Alarm',
+      imageSource: 'assets/alarm_icon.png'),
+];

@@ -33,9 +33,6 @@ class NotificationController {
         ),
         (route) => route.isFirst,
       );
-      print("Screen off");
-    } else {
-      print("screen on");
     }
   }
 
@@ -64,9 +61,6 @@ class NotificationController {
     List<AlarmInfo> alarms = await alarmHelper.getAlarms();
 
     for (AlarmInfo alarm in alarms) {
-      print(alarm.notificationId);
-      print('received ID : $notificationId');
-      // Map<int, int> selectedDaysMap = alarm.getSelectedDaysMap();
       if (alarm.notificationId == notificationId) {
         alarm.isPending = isPending;
         await alarmHelper.updateAlarm(alarm);

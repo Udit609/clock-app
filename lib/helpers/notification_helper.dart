@@ -83,7 +83,6 @@ Future<void> scheduleAlarmNotification(
 
 Future<void> cancelScheduledNotifications(int id) async {
   await AwesomeNotifications().cancel(id);
-  print("Notification deleted: $id");
 }
 
 Future<void> rescheduleNotificationsForSelectedDays(AlarmInfo alarm) async {

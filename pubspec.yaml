@@ -22,8 +22,6 @@ dependencies:
   path: ^1.9.0
   awesome_notifications: ^0.9.3+1
   permission_handler: ^11.3.1
-  circular_countdown_timer: ^0.2.3
-  flutter_ringtone_player: ^4.0.0+3
 
 dev_dependencies:
   flutter_test:

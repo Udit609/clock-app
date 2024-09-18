@@ -33,39 +33,39 @@ class _FullscreenAlarmNotificationState extends State<FullscreenAlarmNotificatio
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
+              const Icon(
                 Icons.alarm,
                 size: 48.0,
                 color: Colors.white,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30.0,
               ),
               Text(
                 widget.title,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 32.0,
                   fontWeight: FontWeight.w700,
                   color: Colors.white,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20.0,
               ),
               Text(
                 formattedTime,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 42.0,
                   fontWeight: FontWeight.w700,
                   color: Colors.white,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10.0,
               ),
               Text(
                 formattedDate,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 32.0,
                   fontWeight: FontWeight.w500,
                   color: Colors.white,
@@ -81,7 +81,6 @@ class _FullscreenAlarmNotificationState extends State<FullscreenAlarmNotificatio
                     widget.notificationId,
                     false,
                   );
-                  print("Notification Canceled");
                   Navigator.of(context).pop();
                   SystemNavigator.pop();
                 },
@@ -91,8 +90,8 @@ class _FullscreenAlarmNotificationState extends State<FullscreenAlarmNotificatio
                     borderRadius: BorderRadius.circular(40.0),
                   ),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(
                     horizontal: 20.0,
                     vertical: 10.0,
                   ),
