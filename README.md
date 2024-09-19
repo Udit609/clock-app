@@ -1,7 +1,7 @@
 # Alarm Clock App
 
 ### Overview
-The **Alarm Clock App** is a feature-rich alarm management application built using Flutter. It allows users to schedule alarms and receive fullscreen alarm notifications. The app uses **SQLite** database to persist alarm data, **Provider** for state management and **Awesome Notifications** for notification management, enabling alarms to trigger even when the screen is locked. The project structure and UI were inspired by the [flutter_alarm_clock repository](https://github.com/afzalali15/flutter_alarm_clock).
+The **Alarm Clock App** is a feature-rich alarm management application built using Flutter. It allows users to schedule alarms and receive fullscreen alarm notifications. The app uses **SQLite** database to persist alarm data, **Provider** for state management and **Awesome Notifications** for notification management, enabling alarms to trigger even when the screen is locked. The project structure and UI were inspired by the [flutter_alarm_clock](https://github.com/afzalali15/flutter_alarm_clock) repository.
 
 <img src="https://github.com/user-attachments/assets/86951068-983f-4795-baa5-9fa7e22be2fb" width="325" height="600" alt="clock_screen"> <img src="https://github.com/user-attachments/assets/f0f97ceb-ce38-4af6-b003-9bc83e74133d" width="325" height="600" alt="alarm_screen"> <img src="https://github.com/user-attachments/assets/85f44738-acf8-4da2-8b7e-eb77e69ce3b5" width="325" height="600" alt="fullscreen_notification">
 
