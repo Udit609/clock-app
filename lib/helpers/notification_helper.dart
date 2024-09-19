@@ -7,18 +7,6 @@ import 'package:intl/intl.dart';
 import '../models/alarm_info.dart';
 import 'alarm_helper.dart';
 
-// Future<void> createPlantFoodNotification() async {
-//   await AwesomeNotifications().createNotification(
-//     content: NotificationContent(
-//       id: 100,
-//       channelKey: 'basic_channel',
-//       title: 'Alarm',
-//       body: 'Florist at 123 Main St. has 2 in stock.',
-//       notificationLayout: NotificationLayout.Default,
-//     ),
-//   );
-// }
-
 Future<int> generateUniqueNotificationId() async {
   final random = Random();
   int notificationId;

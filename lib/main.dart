@@ -11,14 +11,6 @@ void main() async {
     null,
     [
       NotificationChannel(
-        channelKey: 'basic_channel',
-        channelName: 'Basic Notifications',
-        defaultColor: Colors.teal,
-        importance: NotificationImportance.High,
-        channelShowBadge: true,
-        channelDescription: 'Notification channel for basic tests',
-      ),
-      NotificationChannel(
         channelKey: 'scheduled',
         channelName: 'Alarm',
         defaultPrivacy: NotificationPrivacy.Public,
