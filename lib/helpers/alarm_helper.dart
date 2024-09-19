@@ -1,6 +1,7 @@
+import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'dart:async';  // Import for StreamController
+import 'dart:async';
 import '../models/alarm_info.dart';
 import 'notification_helper.dart';
 
@@ -68,9 +69,17 @@ class AlarmHelper {
   Future<List<AlarmInfo>> getAlarms() async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query(tableAlarm);
-    return List.generate(maps.length, (i) {
+    List<AlarmInfo> alarms = List.generate(maps.length, (i) {
       return AlarmInfo.fromMap(maps[i]);
     });
+
+    alarms.sort((a, b) {
+      final timeA = DateFormat('HH:mm').parse(DateFormat('HH:mm').format(a.alarmDateTime!));
+      final timeB = DateFormat('HH:mm').parse(DateFormat('HH:mm').format(b.alarmDateTime!));
+      return timeA.compareTo(timeB);
+    });
+
+    return alarms;
   }
 
   // Update
